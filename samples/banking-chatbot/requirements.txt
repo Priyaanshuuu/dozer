@@ -1,0 +1,4 @@
+langchain-core==0.3.76
+langchain-ollama==0.3.8
+langchain-chroma==0.2.6
+PyYAML==6.0.3

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "travel",
+    "name": "Demo Travel Card",
+    "minimum_income_cents": 6000000,
+    "description": "Fictional USD product. Annual fee $95. Earn 3% cashback on travel and 1% on other purchases. No foreign transaction fee. Minimum annual income $60,000 for this demo. Travel purchases are flights and hotels. No lounge access. Rewards exclude cash advances. Approval is not guaranteed."
+  },
+  {
+    "id": "everyday",
+    "name": "Demo Everyday Card",
+    "minimum_income_cents": 3000000,
+    "description": "Fictional USD product. Annual fee $0. Earn 3% cashback on groceries, 2% on dining, and 1% on other purchases. Foreign transaction fee 3%. Minimum annual income $30,000 for this demo. No travel insurance. Rewards exclude cash advances. Approval is not guaranteed."
+  },
+  {
+    "id": "basic",
+    "name": "Demo Basic Card",
+    "minimum_income_cents": 0,
+    "description": "Fictional USD product. Annual fee $0. Earn 1% cashback on purchases. Foreign transaction fee 3%. No minimum income in this demo; underwriting still applies. No premium travel benefits. Rewards exclude cash advances. Approval is not guaranteed."
+  }
+]

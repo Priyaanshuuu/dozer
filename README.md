@@ -26,6 +26,8 @@ sinks:
 
 Full documentation can be found [here](https://github.com/getdozer/dozer/blob/main/dozer-types/src/models/config.rs#L15)
 
+For a complete application example, see the [personalized banking chatbot](samples/banking-chatbot/README.md), which combines Dozer customer profiles with LangChain, Chroma, and a local LLM.
+
 
 ## Supported Sources
 

@@ -1,0 +1,8 @@
+.env
+.venv
+.test-deps
+__pycache__
+**/__pycache__
+.chroma
+.dozer
+dozer.lock

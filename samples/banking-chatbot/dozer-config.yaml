@@ -1,0 +1,56 @@
+app_name: banking-chatbot
+version: 1
+connections:
+  - name: bank
+    config: !Postgres
+      host: localhost
+      port: 55432
+      user: bank
+      password: bank
+      database: bank
+sources:
+  - name: customers
+    table_name: customers
+    schema: public
+    connection: bank
+  - name: transactions
+    table_name: transactions
+    schema: public
+    connection: bank
+# Aggregate before joining so each customer has exactly one output row.
+# All amounts are synthetic USD cents; spending covers all seeded history.
+sql: |
+  WITH spending AS (
+    SELECT customer_id,
+           COUNT(*) AS transaction_count,
+           SUM(amount_cents) AS total_spend_cents,
+           SUM(CASE WHEN category = 'travel' THEN amount_cents ELSE 0 END) AS travel_spend_cents,
+           SUM(CASE WHEN category = 'groceries' THEN amount_cents ELSE 0 END) AS grocery_spend_cents,
+           SUM(CASE WHEN category = 'dining' THEN amount_cents ELSE 0 END) AS dining_spend_cents
+    FROM transactions
+    GROUP BY customer_id
+  )
+  SELECT c.customer_id, c.display_name, c.annual_income_cents, c.current_card,
+         COALESCE(s.transaction_count, 0) AS transaction_count,
+         COALESCE(s.total_spend_cents, 0) AS total_spend_cents,
+         COALESCE(s.travel_spend_cents, 0) AS travel_spend_cents,
+         COALESCE(s.grocery_spend_cents, 0) AS grocery_spend_cents,
+         COALESCE(s.dining_spend_cents, 0) AS dining_spend_cents
+  INTO customer_profiles
+  FROM customers c
+  LEFT JOIN spending s ON c.customer_id = s.customer_id;
+sinks:
+  - name: profiles
+    config: !Clickhouse
+      host: localhost
+      port: 59000
+      user: bank
+      password: bank
+      database: default
+      options: []
+      source_table_name: customer_profiles
+      sink_table_name: customer_profiles
+      create_table_options:
+        engine: CollapsingMergeTree
+        primary_keys: [customer_id]
+        order_by: [customer_id]
